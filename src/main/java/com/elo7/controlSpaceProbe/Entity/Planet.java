@@ -26,11 +26,6 @@ public class Planet {
     }
 
     public Planet() {
-        this.name = "Teste";
-        this.width = 5;
-        this.length = 5;
-        this.occupiedPositions = new ArrayList<>();
-//        occupiedPositions.add(new int[]{1,2});
     }
 
     public int getIdPlanet() {

@@ -27,8 +27,12 @@ public class SpaceProbe {
     public SpaceProbe() {
     }
 
-    public int getIdProbe() {
-        return idProbe;
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
     }
 
     public Direction getDirection() {

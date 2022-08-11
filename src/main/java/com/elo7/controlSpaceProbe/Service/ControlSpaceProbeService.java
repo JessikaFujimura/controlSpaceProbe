@@ -1,5 +1,6 @@
 package com.elo7.controlSpaceProbe.Service;
 
+import com.elo7.controlSpaceProbe.Domain.Dto.PlanetDto;
 import com.elo7.controlSpaceProbe.Domain.Dto.SpaceProbeDto;
 import com.elo7.controlSpaceProbe.Domain.Enum.Command;
 import com.elo7.controlSpaceProbe.Domain.Enum.Direction;
@@ -19,18 +20,24 @@ public class ControlSpaceProbeService {
     @Autowired
     private PlanetRepository planetRepository;
 
-    public SpaceProbe landSpaceProbe(SpaceProbeDto spaceProbeDto){
+    public SpaceProbeDto landSpaceProbe(SpaceProbeDto spaceProbeDto){
         Planet planet = planetRepository.findById(spaceProbeDto.getIdPlanet())
                 .orElseThrow(() -> new RuntimeException("Planeta não encontrado"));
         planet.takePosition(spaceProbeDto.getPositionX(), spaceProbeDto.getPositionY());
         SpaceProbe spaceProbe = new SpaceProbe(spaceProbeDto.getPositionX(),
                 spaceProbeDto.getPositionY(), spaceProbeDto.getDirection());
-        return spaceProbeRepository.save(spaceProbe);
+        SpaceProbe entityPersisted = spaceProbeRepository.save(spaceProbe);
+        return new SpaceProbeDto(entityPersisted.getPositionX(),
+                entityPersisted.getPositionY(),
+                entityPersisted.getDirection().name().charAt(0),
+                planet.getIdPlanet());
     }
 
-    public void createPlanet(){
-        Planet planet = new Planet();
-        planetRepository.save(planet);
+    public PlanetDto createPlanet(PlanetDto planetDto){
+        Planet planet = new Planet(planetDto.getName(), planetDto.getLength(), planetDto.getWidth());
+        Planet entityPersisted = planetRepository.save(planet);
+        return new PlanetDto(entityPersisted.getIdPlanet(), entityPersisted.getName(),
+                entityPersisted.getWidth(), entityPersisted.getLength());
     }
 
     public String moveSpaceProbe(String command, SpaceProbe spaceProbe){
