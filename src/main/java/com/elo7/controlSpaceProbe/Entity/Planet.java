@@ -15,14 +15,17 @@ public class Planet {
     private int width;
     private int length;
 
+    @OneToMany(mappedBy = "planet")
+    private List<SpaceProbe> listOfProbe;
+
     @Transient
-    private List<int[]> occupiedPositions;
+    private List<int[]> occupiedPositions = new ArrayList<>();
 
     public Planet(String name, int width, int length) {
         this.name = name;
         this.width = width;
         this.length = length;
-        this.occupiedPositions = new ArrayList<>();
+        this.listOfProbe = new ArrayList<>();
     }
 
     public Planet() {
@@ -48,10 +51,15 @@ public class Planet {
         return width * length;
     }
 
-    public void takePosition(int x, int y){
-        int[] position = new int[]{x, y};
+    public void landProbeInPlanet(SpaceProbe spaceProbe){
+        this.listOfProbe.add(spaceProbe);
+        int[] position = new int[]{spaceProbe.getPositionX(),spaceProbe.getPositionY()};
         verifyAvailable(position);
         this.occupiedPositions.add(position);
+    }
+
+    public void removeProbe(SpaceProbe spaceProbe){
+        listOfProbe.remove(spaceProbe);
     }
 
     private void verifyAvailable(int[] position) {

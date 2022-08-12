@@ -2,10 +2,7 @@ package com.elo7.controlSpaceProbe.Entity;
 
 import com.elo7.controlSpaceProbe.Domain.Enum.Direction;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class SpaceProbe {
@@ -18,6 +15,10 @@ public class SpaceProbe {
     private int positionY;
     private Direction direction;
 
+    @ManyToOne
+    @JoinColumn(name="planet_id")
+    private Planet planet;
+
     public SpaceProbe(int positionX, int positionY, Direction direction) {
         this.positionX = positionX;
         this.positionY = positionY;
@@ -25,6 +26,10 @@ public class SpaceProbe {
     }
 
     public SpaceProbe() {
+    }
+
+    public int getIdProbe() {
+        return idProbe;
     }
 
     public int getPositionX() {
@@ -59,10 +64,10 @@ public class SpaceProbe {
 
     public int moveY(int step, Direction direction){
         if (direction.equals(Direction.N)) {
-            return this.positionY = positionY - step;
+            return this.positionY = positionY + step;
         }
         if(direction.equals(Direction.S)) {
-            return this.positionY = positionY + step;
+            return this.positionY = positionY - step;
         }
         return this.positionY;
     }

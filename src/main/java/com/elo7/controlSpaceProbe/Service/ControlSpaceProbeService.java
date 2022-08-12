@@ -23,9 +23,9 @@ public class ControlSpaceProbeService {
     public SpaceProbeDto landSpaceProbe(SpaceProbeDto spaceProbeDto){
         Planet planet = planetRepository.findById(spaceProbeDto.getIdPlanet())
                 .orElseThrow(() -> new RuntimeException("Planeta não encontrado"));
-        planet.takePosition(spaceProbeDto.getPositionX(), spaceProbeDto.getPositionY());
         SpaceProbe spaceProbe = new SpaceProbe(spaceProbeDto.getPositionX(),
                 spaceProbeDto.getPositionY(), spaceProbeDto.getDirection());
+        planet.landProbeInPlanet(spaceProbe);
         SpaceProbe entityPersisted = spaceProbeRepository.save(spaceProbe);
         return new SpaceProbeDto(entityPersisted.getPositionX(),
                 entityPersisted.getPositionY(),
